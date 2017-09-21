@@ -607,7 +607,8 @@ plot.xts <- function(x,
     }
   }
   assign(".xts_chob", cs, .plotxtsEnv)
-  cs
+  print(cs)
+  invisible(cs)
 }
 
 # apply a function to the xdata in the xts chob and add a panel with the result
@@ -750,7 +751,8 @@ addSeries <- function(x, main="", on=NA, type="l", col=NULL, lty=1, lwd=1, pch=0
       plot_object$add(exp,env=lenv,expr=TRUE,no.update=no.update)
     }
   }
-  plot_object
+  print(plot_object)
+  invisible(plot_object)
 }
 
 # Add time series of lines to an existing xts plot
@@ -894,7 +896,8 @@ addEventLines <- function(events, main="", on=0, lty=1, lwd=1, col=1, ...){
       plot_object$add(exp,env=lenv,expr=TRUE,no.update=no.update)
     }
   }
-  plot_object
+  print(plot_object)
+  invisible(plot_object)
 }
 
 # Add legend to an existing xts plot
@@ -972,7 +975,8 @@ addLegend <- function(legend.loc="topright", legend.names=NULL, col=NULL, ncol=1
       plot_object$add(exp,env=lenv,expr=TRUE,no.update=no.update)
     }
   }
-  plot_object
+  print(plot_object)
+  invisible(plot_object)
 }
 
 # Determine legend coordinates based on legend location,
@@ -1109,7 +1113,8 @@ addPolygon <- function(x, y=NULL, main="", on=NA, col=NULL, ...){
       plot_object$add(exp,env=lenv,expr=TRUE,no.update=no.update)
     }
   }
-  plot_object
+  print(plot_object)
+  invisible(plot_object)
 }# polygon
 
 
