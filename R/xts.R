@@ -92,8 +92,6 @@ function(x=NULL,
   x <- structure(.Data=x,
             index=structure(index,tzone=tzone,tclass=orderBy),
             class=c('xts','zoo'),
-            .indexCLASS=orderBy,
-            tclass=orderBy,
             ...)
   if(!is.null(attributes(x)$dimnames[[1]]))
     # this is very slow if user adds rownames, but maybe that is deserved :)
@@ -104,7 +102,7 @@ function(x=NULL,
 `.xts` <-
 function(x=NULL, index, tclass=c("POSIXct","POSIXt"),
          tzone=Sys.getenv("TZ"),
-         check=TRUE, unique=FALSE, .indexCLASS=tclass, ...) {
+         check=TRUE, unique=FALSE, ...) {
   if(check) {
     if( !isOrdered(index, increasing=TRUE, strictly=unique) )
       stop('index is not in ',ifelse(unique, 'strictly', ''),' increasing order')
@@ -131,16 +129,14 @@ function(x=NULL, index, tclass=c("POSIXct","POSIXt"),
   }
 
   structure(.Data=x,
-            index=structure(index,tzone=tzone,tclass=.indexCLASS),
-            .indexCLASS=.indexCLASS,
-            tclass=.indexCLASS,
+            index=structure(index,tzone=tzone,tclass=tclass),
             class=c('xts','zoo'), ...)
 }
 
 `..xts` <-
 function(x=NULL, index, tclass=c("POSIXct","POSIXt"),
          tzone=Sys.getenv("TZ"),
-         check=TRUE, unique=FALSE, .indexCLASS=tclass, ...) {
+         check=TRUE, unique=FALSE, ...) {
   if(check) {
     if( !isOrdered(index, increasing=TRUE, strictly=unique) )
       stop('index is not in ',ifelse(unique, 'strictly', ''),' increasing order')
@@ -170,7 +166,7 @@ function(x=NULL, index, tclass=c("POSIXct","POSIXt"),
     .indexFORMAT <- eval(dots.names$.indexFORMAT,parent.frame())
   else
     .indexFORMAT <- NULL
-  xx <- .Call("add_xtsCoreAttributes", x, index, .indexCLASS, tzone, tclass,
+  xx <- .Call("add_xtsCoreAttributes", x, index, tzone, tclass,
               c('xts','zoo'), .indexFORMAT, PACKAGE='xts')
   # remove .indexFORMAT that come through Ops.xts
   dots.names$.indexFORMAT <- NULL
@@ -188,7 +184,7 @@ function(x, match.to, error=FALSE, ...) {
         stop('incompatible match.to attibutes')
       } else return(x)
 
-    if(!is.xts(x)) x <- .xts(coredata(x),.index(match.to), .indexCLASS=indexClass(match.to), tzone=tzone(match.to))
+    if(!is.xts(x)) x <- .xts(coredata(x),.index(match.to),tzone=tzone(match.to))
     CLASS(x) <- CLASS(match.to)
     xtsAttributes(x) <- xtsAttributes(match.to)
   }
@@ -247,7 +243,7 @@ function(x,value) {
 function(x) {
   inherits(x,'xts') &&
   is.numeric(.index(x)) &&
-  !is.null(indexClass(x))
+  !is.null(tclass(x))
 }
 
 `as.xts` <-
