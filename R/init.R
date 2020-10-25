@@ -1,5 +1,5 @@
 .set_xts_options <- function() {
-  options("xts.max.print" = 1)
+  options("xts.max.print" = 1) #TODO change to Inf for release
   options("xts.print.topn" = 5)
   return(invisible())
 }
