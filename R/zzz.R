@@ -70,6 +70,9 @@ function(pkg, generic, class, fun = NULL)
       register_s3_method("zoo", "as.zoo", "xts")
     }
   }
+
+  .set_xts_options()
+
   invisible()
 }
 

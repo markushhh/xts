@@ -1,5 +1,5 @@
 #
-#   xts: eXtensible time-series 
+#   xts: eXtensible time-series
 #
 #   Copyright (C) 2008  Jeffrey A. Ryan jeff.a.ryan @ gmail.com
 #
@@ -18,33 +18,49 @@
 #   You should have received a copy of the GNU General Public License
 #   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+print.xts <- function(x, fmt, max = getOption("xts.max.print"), ...) {
 
-`print.xts` <-
-function(x,fmt,...) {
   check.TZ(x)
-  if(missing(fmt)) 
+  if (missing(fmt)) {
     fmt <- tformat(x)
-  if(is.null(fmt))
+  }
+  if (is.null(fmt)) {
     fmt <- TRUE
-  
-  xx <- coredata(x, fmt)
-  if(length(xx) == 0) {
-    if(!is.null(dim(x))) {
-      p <- structure(vector(storage.mode(xx)), dim = dim(x),
-                     dimnames = list(format(index(x)),colnames(x)))
-      print(p)
+  }
+
+  if (NROW(x) > max*2+1) {
+    index <- as.character(index(x))
+    index <- c(index[c(1:max)], "...", index[(NROW(x)-max+1):NROW(x)])
+    y <- rbind(
+      format(as.matrix(x[1:max, ])),
+      format(matrix(rep("", NCOL(x)), nrow = 1)),
+      format(as.matrix(x[(NROW(x)-max+1):NROW(x), ]))
+    )
+    rownames(y) <- format(index, justify = "right")
+    colnames(y) <- colnames(x)
+  } else {
+    y <- coredata(x, fmt)
+  }
+
+  if (length(y) == 0) {
+    if (!is.null(dim(x))) {
+      p <- structure(vector(storage.mode(y)), dim = dim(x),
+                     dimnames = list(format(index(x)), colnames(x)))
+      print(p, ...)
     } else {
       cat('Data:\n')
-      print(vector(storage.mode(xx)))
+      print(vector(storage.mode(y)))
       cat('\n')
       cat('Index:\n')
       index <- index(x)
-      if(length(index) == 0) {
+      if (length(index) == 0) {
         print(index)
       } else {
-        str(index(x))
+        print(str(index(x)))
       }
     }
-  } else print(xx, ...)
+  } else {
+    print(y, quote = FALSE, right = TRUE, ...)
+  }
 }
 
