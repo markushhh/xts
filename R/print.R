@@ -18,7 +18,7 @@
 #   You should have received a copy of the GNU General Public License
 #   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-print.xts <- function(x, fmt, max = getOption("xts.max.print"), ...) {
+print.xts <- function(x, fmt, max = getOption("xts.max.print", 5), ...) {
 
   check.TZ(x)
   if (missing(fmt)) {
