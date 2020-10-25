@@ -1,5 +1,3 @@
-data.table:::print.data.table
-
 format.xts <- function(x,
                        max = getOption("xts.max.print"),
                        topn = getOption("xts.print.topn")) {
