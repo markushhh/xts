@@ -1,3 +1,4 @@
+#TODO move to zoo (format.zoo) if zoo accepts new print method
 format.xts <- function(x,
                        max = getOption("xts.max.print"),
                        topn = getOption("xts.print.topn")) {
