@@ -17,8 +17,11 @@
 #
 #   You should have received a copy of the GNU General Public License
 #   along with this program.  If not, see <http://www.gnu.org/licenses/>.
-
-print.xts <- function(x, fmt, max = getOption("xts.max.print", 5), ...) {
+print.xts <- function(x,
+                      fmt,
+                      max = getOption("xts.max.print"),
+                      topn = getOption("xts.print.topn"),
+                      ...) {
 
   check.TZ(x)
   if (missing(fmt)) {
@@ -28,16 +31,8 @@ print.xts <- function(x, fmt, max = getOption("xts.max.print", 5), ...) {
     fmt <- TRUE
   }
 
-  if (NROW(x) > max*2+1) {
-    index <- as.character(index(x))
-    index <- c(index[c(1:max)], "...", index[(NROW(x)-max+1):NROW(x)])
-    y <- rbind(
-      format(as.matrix(x[1:max, ])),
-      format(matrix(rep("", NCOL(x)), nrow = 1)),
-      format(as.matrix(x[(NROW(x)-max+1):NROW(x), ]))
-    )
-    rownames(y) <- format(index, justify = "right")
-    colnames(y) <- colnames(x)
+  if (NROW(x) > max) {
+    y <- format(x, max, topn)
   } else {
     y <- coredata(x, fmt)
   }
